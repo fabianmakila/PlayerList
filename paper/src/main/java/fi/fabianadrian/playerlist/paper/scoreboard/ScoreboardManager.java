@@ -1,12 +1,12 @@
 package fi.fabianadrian.playerlist.paper.scoreboard;
 
+import fi.fabianadrian.playerlist.common.configuration.section.scoreboard.ScoreboardConfigurationSection;
 import fi.fabianadrian.playerlist.paper.PlayerListPaper;
 import fi.fabianadrian.playerlist.paper.scoreboard.team.PaperTeamManager;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.List;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
@@ -15,6 +15,7 @@ public final class ScoreboardManager {
 	private final Scoreboard scoreboard;
 	private final PaperTeamManager teamManager;
 	private ScheduledFuture<?> updateScheduledFuture;
+	private ScoreboardConfigurationSection configuration;
 
 	public ScoreboardManager(PlayerListPaper plugin) {
 		this.plugin = plugin;
@@ -23,6 +24,8 @@ public final class ScoreboardManager {
 	}
 
 	public void reload() {
+		this.configuration = this.plugin.playerList().configuration().scoreBoard();
+
 		if(this.updateScheduledFuture != null) {
 			this.updateScheduledFuture.cancel(true);
 		}
@@ -30,16 +33,16 @@ public final class ScoreboardManager {
 		this.teamManager.reload();
 		this.teamManager.unregisterAllTeams();
 
-		if (!this.plugin.playerList().configuration().scoreBoard().enabled()) {
+		if (!this.configuration.enabled()) {
 			return;
 		}
 
-		ScheduledExecutorService scheduledExecutor = this.plugin.playerList().scheduledExecutor();
-		this.updateScheduledFuture = scheduledExecutor.scheduleAtFixedRate(() ->
+		int updateInterval = this.plugin.playerList().configuration().placeholderRefreshInterval();
+		this.updateScheduledFuture = this.plugin.playerList().scheduledExecutor().scheduleAtFixedRate(() ->
 				this.plugin.onlinePlayers().thenAcceptAsync(
 						this::update,
-						scheduledExecutor
-				), 0, 5, TimeUnit.SECONDS
+						this.plugin.playerList().scheduledExecutor()
+				), 0, updateInterval, TimeUnit.SECONDS
 		);
 
 		List<Player> onlinePlayers = List.copyOf(this.plugin.getServer().getOnlinePlayers());
@@ -49,7 +52,7 @@ public final class ScoreboardManager {
 	}
 
 	public void register(Player player) {
-		if (!this.plugin.playerList().configuration().scoreBoard().enabled()) {
+		if (!this.configuration.enabled()) {
 			return;
 		}
 

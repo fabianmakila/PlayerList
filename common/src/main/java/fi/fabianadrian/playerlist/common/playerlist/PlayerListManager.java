@@ -11,25 +11,33 @@ import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 public abstract class PlayerListManager {
 	private final PlayerList playerList;
 	protected final MiniMessage miniMessage = MiniMessage.miniMessage();
 	protected PlayerListConfigurationSection configuration;
+	private ScheduledFuture<?> scheduledFuture;
 
 	public PlayerListManager(PlayerList playerList) {
 		this.playerList = playerList;
-		this.playerList.scheduledExecutor().scheduleAtFixedRate(() ->
-				this.playerList.platform().onlinePlayers().thenAcceptAsync(
-						players -> players.forEach(this::update),
-						this.playerList.scheduledExecutor()
-				), 0, 5, TimeUnit.SECONDS
-		);
 	}
 
 	public void reload() {
 		this.configuration = this.playerList.configuration().playerList();
+
+		if (this.scheduledFuture != null) {
+			this.scheduledFuture.cancel(false);
+		}
+
+		int updateInterval = this.playerList.configuration().placeholderRefreshInterval();
+		this.scheduledFuture = this.playerList.scheduledExecutor().scheduleAtFixedRate(() ->
+				this.playerList.platform().onlinePlayers().thenAcceptAsync(
+						players -> players.forEach(this::update),
+						this.playerList.scheduledExecutor()
+				), 0, updateInterval, TimeUnit.SECONDS
+		);
 	}
 
 	public void update(Audience player) {
