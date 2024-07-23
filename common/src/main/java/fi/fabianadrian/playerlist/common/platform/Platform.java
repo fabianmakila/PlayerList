@@ -16,4 +16,6 @@ public interface Platform<P extends Audience> {
 	Logger logger();
 
 	PlayerListManager playerListManager();
+
+	boolean isMiniplaceholdersAvailable();
 }

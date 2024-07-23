@@ -7,7 +7,6 @@ import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.JoinConfiguration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,8 +14,8 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 public abstract class PlayerListManager {
-	private final PlayerList playerList;
 	protected final MiniMessage miniMessage = MiniMessage.miniMessage();
+	private final PlayerList playerList;
 	protected PlayerListConfigurationSection configuration;
 	private ScheduledFuture<?> scheduledFuture;
 
@@ -41,13 +40,17 @@ public abstract class PlayerListManager {
 	}
 
 	public void update(Audience player) {
-		TagResolver miniPlaceholdersResolver = MiniPlaceholders.getAudienceGlobalPlaceholders(player);
-
-		// Header and footer
 		List<Component> headerLines = new ArrayList<>();
-		this.configuration.header().forEach(line -> headerLines.add(this.miniMessage.deserialize(line, miniPlaceholdersResolver)));
 		List<Component> footerLines = new ArrayList<>();
-		this.configuration.footer().forEach(line -> footerLines.add(this.miniMessage.deserialize(line, miniPlaceholdersResolver)));
+
+		if (this.playerList.platform().isMiniplaceholdersAvailable()) {
+			this.configuration.header().forEach(line -> headerLines.add(this.miniMessage.deserialize(line, MiniPlaceholders.getAudienceGlobalPlaceholders(player))));
+			this.configuration.footer().forEach(line -> footerLines.add(this.miniMessage.deserialize(line, MiniPlaceholders.getAudienceGlobalPlaceholders(player))));
+		} else {
+			this.configuration.header().forEach(line -> headerLines.add(this.miniMessage.deserialize(line)));
+			this.configuration.footer().forEach(line -> footerLines.add(this.miniMessage.deserialize(line)));
+		}
+
 		player.sendPlayerListHeaderAndFooter(
 				Component.join(JoinConfiguration.newlines(), headerLines),
 				Component.join(JoinConfiguration.newlines(), footerLines)

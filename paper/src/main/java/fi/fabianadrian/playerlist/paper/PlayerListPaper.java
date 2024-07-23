@@ -2,11 +2,11 @@ package fi.fabianadrian.playerlist.paper;
 
 import fi.fabianadrian.playerlist.common.PlayerList;
 import fi.fabianadrian.playerlist.common.platform.Platform;
+import fi.fabianadrian.playerlist.common.playerlist.PlayerListManager;
 import fi.fabianadrian.playerlist.paper.command.RootCommandExecutor;
 import fi.fabianadrian.playerlist.paper.listener.PlayerListener;
-import fi.fabianadrian.playerlist.common.playerlist.PlayerListManager;
-import fi.fabianadrian.playerlist.paper.scoreboard.ScoreboardManager;
 import fi.fabianadrian.playerlist.paper.playerlist.PaperPlayerListManager;
+import fi.fabianadrian.playerlist.paper.scoreboard.ScoreboardManager;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
@@ -21,6 +21,7 @@ public final class PlayerListPaper extends JavaPlugin implements Platform<Player
 	private PlayerList playerList;
 	private PaperPlayerListManager playerListManager;
 	private ScoreboardManager scoreboardManager;
+	private boolean isMiniPlaceholdersEnabled;
 
 	@Override
 	public void onEnable() {
@@ -34,6 +35,8 @@ public final class PlayerListPaper extends JavaPlugin implements Platform<Player
 
 		registerCommands();
 		registerListeners();
+
+		this.isMiniPlaceholdersEnabled = getServer().getPluginManager().isPluginEnabled("MiniPlaceholders");
 	}
 
 	public void reload() {
@@ -87,5 +90,10 @@ public final class PlayerListPaper extends JavaPlugin implements Platform<Player
 	@Override
 	public PlayerListManager playerListManager() {
 		return this.playerListManager;
+	}
+
+	@Override
+	public boolean isMiniplaceholdersAvailable() {
+		return this.isMiniPlaceholdersEnabled;
 	}
 }

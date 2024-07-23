@@ -1,7 +1,7 @@
 package fi.fabianadrian.playerlist.common.configuration;
 
-import fi.fabianadrian.playerlist.common.configuration.section.scoreboard.ScoreboardConfigurationSection;
 import fi.fabianadrian.playerlist.common.configuration.section.PlayerListConfigurationSection;
+import fi.fabianadrian.playerlist.common.configuration.section.scoreboard.ScoreboardConfigurationSection;
 import space.arim.dazzleconf.annote.ConfDefault;
 import space.arim.dazzleconf.annote.SubSection;
 import space.arim.dazzleconf.sorter.AnnotationBasedSorter;

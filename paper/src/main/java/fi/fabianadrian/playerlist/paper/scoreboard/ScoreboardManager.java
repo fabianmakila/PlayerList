@@ -26,7 +26,7 @@ public final class ScoreboardManager {
 	public void reload() {
 		this.configuration = this.plugin.playerList().configuration().scoreBoard();
 
-		if(this.updateScheduledFuture != null) {
+		if (this.updateScheduledFuture != null) {
 			this.updateScheduledFuture.cancel(true);
 		}
 

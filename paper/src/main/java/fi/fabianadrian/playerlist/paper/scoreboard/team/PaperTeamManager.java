@@ -3,7 +3,7 @@ package fi.fabianadrian.playerlist.paper.scoreboard.team;
 import fi.fabianadrian.playerlist.common.scoreboard.team.TeamManager;
 import fi.fabianadrian.playerlist.paper.PlayerListPaper;
 import io.github.miniplaceholders.api.MiniPlaceholders;
-import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
@@ -50,27 +50,44 @@ public final class PaperTeamManager extends TeamManager<Player> {
 	}
 
 	private void update(Player player, Team team) {
-		TagResolver miniPlaceholdersResolver = MiniPlaceholders.getAudienceGlobalPlaceholders(player);
+		updatePrefix(player, team);
+		updateSuffix(player, team);
+	}
 
+	private void updatePrefix(Player player, Team team) {
 		String prefix = this.configuration.prefix();
-		if (!prefix.isBlank()) {
-			team.prefix(this.miniMessage.deserialize(
-					prefix,
-					miniPlaceholdersResolver
-			));
-		} else {
+
+		if (prefix.isBlank()) {
 			team.prefix(null);
+			return;
 		}
 
-		String suffix = this.configuration.suffix();
-		if (!suffix.isBlank()) {
-			team.suffix(this.miniMessage.deserialize(
-					suffix,
-					miniPlaceholdersResolver
-			));
+		Component prefixComponent;
+		if (this.plugin.isMiniplaceholdersAvailable()) {
+			prefixComponent = this.miniMessage.deserialize(prefix, MiniPlaceholders.getAudienceGlobalPlaceholders(player));
 		} else {
-			team.suffix(null);
+			prefixComponent = this.miniMessage.deserialize(prefix);
 		}
+
+		team.prefix(prefixComponent);
+	}
+
+	private void updateSuffix(Player player, Team team) {
+		String suffix = this.configuration.suffix();
+
+		if (suffix.isBlank()) {
+			team.suffix(null);
+			return;
+		}
+
+		Component suffixComponent;
+		if (this.plugin.isMiniplaceholdersAvailable()) {
+			suffixComponent = this.miniMessage.deserialize(suffix, MiniPlaceholders.getAudienceGlobalPlaceholders(player));
+		} else {
+			suffixComponent = this.miniMessage.deserialize(suffix);
+		}
+
+		team.suffix(suffixComponent);
 	}
 
 	private void registerTeam(Player player, String teamName) {
