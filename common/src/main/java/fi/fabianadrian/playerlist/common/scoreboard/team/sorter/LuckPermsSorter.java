@@ -10,16 +10,25 @@ import net.luckperms.api.model.user.User;
 import java.util.Iterator;
 
 public final class LuckPermsSorter extends Sorter {
-	private final LuckPerms api = LuckPermsProvider.get();
+	private LuckPerms api = null;
 	private final Criteria criteria;
 
 	public LuckPermsSorter(SorterOrder order, Criteria criteria) {
 		super(order);
 		this.criteria = criteria;
+
+		try {
+			this.api = LuckPermsProvider.get();
+		} catch (IllegalStateException ignored) {
+		}
 	}
 
 	@Override
 	public String output(Audience player) {
+		if (this.api == null) {
+			return String.format("%03x", this.baseInteger);
+		}
+
 		int weight;
 		switch (this.criteria) {
 			case PREFIX_WEIGHT -> weight = highestPrefixWeight(player);
