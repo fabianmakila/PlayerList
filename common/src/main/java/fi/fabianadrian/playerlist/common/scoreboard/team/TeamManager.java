@@ -23,7 +23,7 @@ public abstract class TeamManager<P> {
 		this.configuration = this.playerList.configuration().scoreBoard().team();
 
 		this.sorters.clear();
-		SorterFactory sorterFactory = new SorterFactory();
+		SorterFactory sorterFactory = new SorterFactory(this.playerList);
 		this.configuration.sorters().forEach(unparsed -> {
 			Sorter sorter;
 			try {

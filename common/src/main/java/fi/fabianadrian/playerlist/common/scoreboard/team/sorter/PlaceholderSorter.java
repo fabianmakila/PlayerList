@@ -10,15 +10,23 @@ public final class PlaceholderSorter extends Sorter {
 	private final MiniMessage miniMessage = MiniMessage.miniMessage();
 	private final PlainTextComponentSerializer plainTextSerializer = PlainTextComponentSerializer.plainText();
 	private final String placeholder;
+	private final boolean miniPlaceholders;
 
-	public PlaceholderSorter(SorterOrder order, String placeholder) {
+	public PlaceholderSorter(SorterOrder order, String placeholder, boolean miniPlaceholders) {
 		super(order);
 		this.placeholder = placeholder;
+		this.miniPlaceholders = miniPlaceholders;
 	}
 
 	@Override
 	public String output(Audience player) {
-		Component parsed = this.miniMessage.deserialize(this.placeholder, MiniPlaceholders.getAudienceGlobalPlaceholders(player));
+		Component parsed;
+		if (this.miniPlaceholders) {
+			parsed = this.miniMessage.deserialize(this.placeholder, MiniPlaceholders.getAudienceGlobalPlaceholders(player));
+		} else {
+			parsed = this.miniMessage.deserialize(this.placeholder);
+		}
+
 		String parsedPlainText = this.plainTextSerializer.serialize(parsed);
 
 		if (parsedPlainText.matches("\\d*")) {
