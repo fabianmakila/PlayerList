@@ -21,6 +21,6 @@ plugin-luckperms = { module = "net.luckperms:api", version = "5.4" }
 
 [plugins]
 shadow = { id = "com.github.johnrengelman.shadow", version = "8.1.1" }
-spotless = { id = "com.diffplug.spotless:spotless-plugin-gradle", version = "6.18.0" }
+spotless = { id = "com.diffplug.spotless:spotless-plugin-gradle", version = "7.0.0.BETA1" }
 pluginYml = { id = "net.minecrell.plugin-yml.bukkit", version = "0.6.0" }
 sponge = { id = "org.spongepowered.gradle.plugin", version = "2.0.2" }
