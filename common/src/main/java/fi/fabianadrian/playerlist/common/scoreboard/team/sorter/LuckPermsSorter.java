@@ -19,7 +19,7 @@ public final class LuckPermsSorter extends Sorter {
 
 		try {
 			this.api = LuckPermsProvider.get();
-		} catch (IllegalStateException ignored) {
+		} catch (IllegalStateException | NoClassDefFoundError ignored) {
 		}
 	}
 
