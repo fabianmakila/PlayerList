@@ -1,33 +1,11 @@
 plugins {
-	id("playerlist.java-conventions")
+	id("playerlist.platform-conventions")
 	alias(libs.plugins.pluginYml)
-	alias(libs.plugins.shadow)
 }
 
 dependencies {
 	compileOnly(libs.platform.paper)
-
-	implementation(project(":common"))
 	compileOnly(libs.plugin.luckperms)
-}
-
-tasks {
-	build {
-		dependsOn(shadowJar)
-	}
-	shadowJar {
-		minimize()
-
-		destinationDirectory.set(file("${rootProject.rootDir}/dist"))
-		archiveClassifier.set("")
-		archiveBaseName.set("${rootProject.name}-${project.name.replaceFirstChar(Char::titlecase)}")
-
-		sequenceOf(
-			"space.arim",
-		).forEach { pkg ->
-			relocate(pkg, "fi.fabianadrian.playerlist.dependency.$pkg")
-		}
-	}
 }
 
 bukkit {
