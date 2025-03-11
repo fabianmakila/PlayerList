@@ -15,6 +15,7 @@ public final class SorterSerializer implements TypeSerializer<Sorter> {
 	private static final String ORDER = "order";
 	private static final String CRITERIA = "criteria";
 	private static final String PLACEHOLDER = "placeholder";
+	private static final String CASE_SENSITIVE = "case-sensitive";
 	private final PlayerList plugin;
 
 	public SorterSerializer(PlayerList plugin) {
@@ -38,8 +39,9 @@ public final class SorterSerializer implements TypeSerializer<Sorter> {
 			case PLACEHOLDER -> {
 				final ConfigurationNode placeholderNode = nonVirtualNode(node, PLACEHOLDER);
 				final String placeholder = placeholderNode.getString();
+				final Boolean caseSensitive = node.node(CASE_SENSITIVE).getBoolean(true);
 
-				return new PlaceholderSorter(this.plugin, order, placeholder);
+				return new PlaceholderSorter(this.plugin, order, placeholder, caseSensitive);
 			}
 			default -> throw new IllegalStateException("Unknown sorter type");
 		}
@@ -59,6 +61,7 @@ public final class SorterSerializer implements TypeSerializer<Sorter> {
 			node.node(CRITERIA).set(luckPermsSorter.criteria());
 		} else if (sorter instanceof PlaceholderSorter placeholderSorter) {
 			node.node(PLACEHOLDER).set(placeholderSorter.placeholder());
+			node.node(CASE_SENSITIVE).set(placeholderSorter.caseSensitive());
 		}
 	}
 

@@ -10,14 +10,17 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 
 import java.util.Comparator;
+import java.util.Locale;
 
 public final class PlaceholderSorter extends Sorter {
 	private final MiniMessage miniMessage = MiniMessage.builder().build();
 	private final String placeholder;
+	private final boolean caseSensitive;
 
-	public PlaceholderSorter(PlayerList plugin, SortingOrder order, String placeholder) {
+	public PlaceholderSorter(PlayerList plugin, SortingOrder order, String placeholder, boolean caseSensitive) {
 		super(SorterType.PLACEHOLDER, order);
 		this.placeholder = placeholder;
+		this.caseSensitive = caseSensitive;
 
 		PluginManager pluginManager = plugin.getServer().getPluginManager();
 		switch (placeholder.charAt(0)) {
@@ -44,15 +47,27 @@ public final class PlaceholderSorter extends Sorter {
 		return this.placeholder;
 	}
 
+	public boolean caseSensitive() {
+		return this.caseSensitive;
+	}
+
 	private String parseMiniPlaceholders(Player player) {
 		final Component deserialized = this.miniMessage.deserialize(
 				this.placeholder,
 				MiniPlaceholders.getAudienceGlobalPlaceholders(player)
 		);
-		return PlainTextComponentSerializer.plainText().serialize(deserialized);
+		String serialized = PlainTextComponentSerializer.plainText().serialize(deserialized);
+		if (!this.caseSensitive) {
+			serialized = serialized.toLowerCase(Locale.ROOT);
+		}
+		return serialized;
 	}
 
 	private String parsePlaceholderAPI(Player player) {
-		return PlaceholderAPI.setPlaceholders(player, this.placeholder);
+		String parsed = PlaceholderAPI.setPlaceholders(player, this.placeholder);
+		if (!this.caseSensitive) {
+			parsed = parsed.toLowerCase(Locale.ROOT);
+		}
+		return parsed;
 	}
 }
