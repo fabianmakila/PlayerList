@@ -32,6 +32,6 @@ public class Configuration {
 	}
 
 	public int placeholderRefreshInterval() {
-		return placeholderRefreshInterval;
+		return this.placeholderRefreshInterval;
 	}
 }
