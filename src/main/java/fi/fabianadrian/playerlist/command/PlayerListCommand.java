@@ -18,6 +18,7 @@ public final class PlayerListCommand {
 			.key("playerlist.command.reload.success")
 			.color(NamedTextColor.GREEN)
 			.build();
+	private static final String PERMISSION_RELOAD = "playerlist.command.reload";
 	private final PlayerList plugin;
 
 	public PlayerListCommand(PlayerList plugin) {
@@ -26,16 +27,18 @@ public final class PlayerListCommand {
 
 	public LiteralCommandNode<CommandSourceStack> command() {
 		return Commands.literal("playerlist")
-				.then(Commands.literal("reload").executes(ctx -> {
-					try {
-						this.plugin.reload();
-						ctx.getSource().getSender().sendMessage(COMPONENT_RELOAD_SUCCESS);
-					} catch (ConfigurateException e) {
-						this.plugin.getSLF4JLogger().error("Couldn't load configuration", e);
-						ctx.getSource().getSender().sendMessage(COMPONENT_RELOAD_FAILED);
-					}
-					return Command.SINGLE_SUCCESS;
-				}))
+				.then(Commands.literal("reload")
+						.requires(stack -> stack.getSender().hasPermission(PERMISSION_RELOAD))
+						.executes(ctx -> {
+							try {
+								this.plugin.reload();
+								ctx.getSource().getSender().sendMessage(COMPONENT_RELOAD_SUCCESS);
+							} catch (ConfigurateException e) {
+								this.plugin.getSLF4JLogger().error("Couldn't load configuration", e);
+								ctx.getSource().getSender().sendMessage(COMPONENT_RELOAD_FAILED);
+							}
+							return Command.SINGLE_SUCCESS;
+						}))
 				.build();
 	}
 }
