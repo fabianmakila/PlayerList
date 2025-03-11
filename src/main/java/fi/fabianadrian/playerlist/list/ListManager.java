@@ -7,6 +7,7 @@ import io.github.miniplaceholders.api.MiniPlaceholders;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.JoinConfiguration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -54,8 +55,9 @@ public final class ListManager {
 		Configuration configuration = this.playerList.configuration();
 
 		if (this.isMiniPlaceholdersAvailable) {
-			configuration.header().forEach(line -> headerLines.add(this.miniMessage.deserialize(line, MiniPlaceholders.getAudienceGlobalPlaceholders(player))));
-			configuration.footer().forEach(line -> footerLines.add(this.miniMessage.deserialize(line, MiniPlaceholders.getAudienceGlobalPlaceholders(player))));
+			TagResolver miniPlaceholdersResolver = MiniPlaceholders.getAudienceGlobalPlaceholders(player);
+			configuration.header().forEach(line -> headerLines.add(this.miniMessage.deserialize(line, miniPlaceholdersResolver)));
+			configuration.footer().forEach(line -> footerLines.add(this.miniMessage.deserialize(line, miniPlaceholdersResolver)));
 		} else {
 			configuration.header().forEach(line -> headerLines.add(this.miniMessage.deserialize(line)));
 			configuration.footer().forEach(line -> footerLines.add(this.miniMessage.deserialize(line)));
@@ -82,16 +84,24 @@ public final class ListManager {
 	}
 
 	private void updateCustomName(Player player) {
-		String playerListName = this.playerList.configuration().playerListName();
+		String nameString = this.playerList.configuration().playerListName();
 
-		if (!playerListName.isBlank()) {
-			player.playerListName(this.miniMessage.deserialize(
-					playerListName,
-					MiniPlaceholders.getAudienceGlobalPlaceholders(player)
-			));
-		} else {
+		if (nameString.isBlank()) {
 			player.playerListName(null);
+			return;
 		}
+
+		Component nameComponent;
+		if (this.isMiniPlaceholdersAvailable) {
+			nameComponent = this.miniMessage.deserialize(
+					nameString,
+					MiniPlaceholders.getAudienceGlobalPlaceholders(player)
+			);
+		} else {
+			nameComponent = this.miniMessage.deserialize(nameString);
+		}
+
+		player.playerListName(nameComponent);
 	}
 
 	private void constructComparatorFromSorters() {
