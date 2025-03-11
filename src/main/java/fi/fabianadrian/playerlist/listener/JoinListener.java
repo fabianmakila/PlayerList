@@ -7,10 +7,10 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.util.ArrayList;
 
-public final class PlayerListener implements Listener {
+public final class JoinListener implements Listener {
 	private final PlayerList plugin;
 
-	public PlayerListener(PlayerList plugin) {
+	public JoinListener(PlayerList plugin) {
 		this.plugin = plugin;
 	}
 

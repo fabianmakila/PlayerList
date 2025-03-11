@@ -4,7 +4,7 @@ import fi.fabianadrian.playerlist.command.PlayerListCommand;
 import fi.fabianadrian.playerlist.configuration.Configuration;
 import fi.fabianadrian.playerlist.configuration.ConfigurationManager;
 import fi.fabianadrian.playerlist.list.ListManager;
-import fi.fabianadrian.playerlist.listener.PlayerListener;
+import fi.fabianadrian.playerlist.listener.JoinListener;
 import fi.fabianadrian.playerlist.locale.TranslationManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.entity.Player;
@@ -75,7 +75,7 @@ public final class PlayerList extends JavaPlugin {
 	private void registerListeners() {
 		PluginManager manager = getServer().getPluginManager();
 		List.of(
-				new PlayerListener(this)
+				new JoinListener(this)
 		).forEach(listener -> manager.registerEvents(listener, this));
 	}
 }
