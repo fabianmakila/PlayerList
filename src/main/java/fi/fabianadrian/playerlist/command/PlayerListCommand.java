@@ -6,18 +6,11 @@ import fi.fabianadrian.playerlist.PlayerList;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import org.spongepowered.configurate.ConfigurateException;
 
 public final class PlayerListCommand {
-	private static final Component COMPONENT_RELOAD_FAILED = Component.translatable()
-			.key("playerlist.command.reload.failed")
-			.color(NamedTextColor.RED)
-			.build();
-	private static final Component COMPONENT_RELOAD_SUCCESS = Component.translatable()
-			.key("playerlist.command.reload.success")
-			.color(NamedTextColor.GREEN)
-			.build();
+	private static final Component COMPONENT_RELOAD_FAILED = Component.translatable("playerlist.command.reload.failed");
+	private static final Component COMPONENT_RELOAD_SUCCESS = Component.translatable("playerlist.command.reload.success");
 	private static final String PERMISSION_RELOAD = "playerlist.command.reload";
 	private final PlayerList plugin;
 
