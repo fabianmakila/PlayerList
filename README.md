@@ -9,7 +9,7 @@
 
 # PlayerList
 
-A simple and modern plugin for customizing the playerlist and scoreboard.
+A simple and modern plugin for customizing the player list.
 
 ## Supported platforms
 - Paper
