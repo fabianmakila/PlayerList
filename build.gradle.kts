@@ -2,9 +2,9 @@ import xyz.jpenilla.resourcefactory.paper.PaperPluginYaml
 
 plugins {
 	id("java")
-	id("com.diffplug.spotless") version "7.0.2"
-	id("com.gradleup.shadow") version "8.3.2"
-	id("xyz.jpenilla.resource-factory-paper-convention") version "1.2.0"
+	id("com.diffplug.spotless") version "7.0.3"
+	id("com.gradleup.shadow") version "8.3.5"
+	id("xyz.jpenilla.resource-factory-paper-convention") version "1.2.1"
 }
 
 group = "fi.fabianadrian"
