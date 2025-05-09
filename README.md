@@ -9,16 +9,18 @@
 
 # PlayerList
 
-A simple and modern plugin for customizing the player list.
+A simple and modern plugin for customizing the playerlist.
 
 ## Supported platforms
 - Paper
 
 ## Design goals
 
-PlayerList aims to be a simple solution for customizing the playerlist. It uses API methods only which means that it should not break between Minecraft updates, unlike other similiar more advanced plugins.
+PlayerList aims to be a simple and modern plugin that focuses solely on the playerlist.
+Unlike other similar plugins with more advanced features, PlayerList uses API methods only which ensures minimal breakages between server updates.
 
-The plugin is designed to be used alongside with MiniPlaceholders, though it is not strictly required. It currently does not contain any built in placeholders.
+The plugin is designed to be used alongside with MiniPlaceholders, though it is not strictly required.
+It currently does not contain any built in placeholders.
 
 Feature wise, the goal is to implement any features achieved using the API methods available as long as no complicated hacks are required.
 
