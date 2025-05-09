@@ -26,6 +26,7 @@ dependencies {
 	compileOnly("io.github.miniplaceholders:miniplaceholders-api:2.3.0")
 
 	implementation("org.spongepowered:configurate-yaml:4.2.0")
+	implementation("org.bstats:bstats-bukkit:3.0.2")
 }
 
 paperPluginYaml {
@@ -60,12 +61,6 @@ java.toolchain {
 	languageVersion.set(JavaLanguageVersion.of(21))
 }
 
-tasks {
-	compileJava {
-		options.encoding = "UTF-8"
-	}
-}
-
 spotless {
 	java {
 		endWithNewline()
@@ -80,14 +75,18 @@ tasks {
 	build {
 		dependsOn(shadowJar)
 	}
+	compileJava {
+		options.encoding = "UTF-8"
+	}
 	shadowJar {
 		minimize()
 		sequenceOf(
-			"org.spongepowered.configurate",
+			"io.leangen.geantyref",
 			"net.kyori.option",
-			"io.leangen.geantyref"
-		).forEach { pkg ->
-			relocate(pkg, "fi.fabianadrian.playerlist.dependency.$pkg")
+			"org.bstats",
+			"org.spongepowered.configurate"
+		).forEach {
+			relocate(it, "fi.fabianadrian.playerlist.dependency.$it")
 		}
 	}
 }

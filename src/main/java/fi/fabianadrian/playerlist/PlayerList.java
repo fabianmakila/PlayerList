@@ -7,6 +7,7 @@ import fi.fabianadrian.playerlist.list.ListManager;
 import fi.fabianadrian.playerlist.listener.JoinListener;
 import fi.fabianadrian.playerlist.locale.TranslationManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -41,6 +42,8 @@ public final class PlayerList extends JavaPlugin {
 
 		registerCommands();
 		registerListeners();
+
+		new Metrics(this, 25811);
 	}
 
 	public Configuration configuration() {
