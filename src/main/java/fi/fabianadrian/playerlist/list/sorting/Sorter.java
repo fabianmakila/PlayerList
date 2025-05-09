@@ -23,7 +23,7 @@ public abstract class Sorter {
 	}
 
 	public Comparator<Player> comparator() {
-		if (this.order == SortingOrder.ASCENDING || comparator == null) {
+		if (this.order == SortingOrder.DESCENDING || comparator == null) {
 			return comparator;
 		} else {
 			return comparator.reversed();
