@@ -1,10 +1,11 @@
 import xyz.jpenilla.resourcefactory.paper.PaperPluginYaml
+import java.nio.charset.StandardCharsets
 
 plugins {
 	id("java")
-	id("com.diffplug.spotless") version "7.0.3"
-	id("com.gradleup.shadow") version "8.3.5"
-	id("xyz.jpenilla.resource-factory-paper-convention") version "1.2.1"
+	id("com.diffplug.spotless") version "7.2.1"
+	id("com.gradleup.shadow") version "9.0.0-rc2"
+	id("xyz.jpenilla.resource-factory-paper-convention") version "1.3.0"
 }
 
 group = "fi.fabianadrian"
@@ -76,7 +77,7 @@ tasks {
 		dependsOn(shadowJar)
 	}
 	compileJava {
-		options.encoding = "UTF-8"
+		options.encoding = StandardCharsets.UTF_8.name()
 	}
 	shadowJar {
 		minimize()
