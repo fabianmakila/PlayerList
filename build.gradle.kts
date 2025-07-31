@@ -1,5 +1,4 @@
 import xyz.jpenilla.resourcefactory.paper.PaperPluginYaml
-import java.nio.charset.StandardCharsets
 
 plugins {
 	id("java")
@@ -77,7 +76,7 @@ tasks {
 		dependsOn(shadowJar)
 	}
 	compileJava {
-		options.encoding = StandardCharsets.UTF_8.name()
+		options.encoding = Charsets.UTF_8.name()
 	}
 	shadowJar {
 		minimize()
