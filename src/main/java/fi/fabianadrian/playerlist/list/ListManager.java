@@ -55,9 +55,9 @@ public final class ListManager {
 		Configuration configuration = this.playerList.configuration();
 
 		if (this.isMiniPlaceholdersAvailable) {
-			TagResolver miniPlaceholdersResolver = MiniPlaceholders.getAudienceGlobalPlaceholders(player);
-			configuration.header().forEach(line -> headerLines.add(this.miniMessage.deserialize(line, miniPlaceholdersResolver)));
-			configuration.footer().forEach(line -> footerLines.add(this.miniMessage.deserialize(line, miniPlaceholdersResolver)));
+			TagResolver miniPlaceholdersResolver = MiniPlaceholders.audienceGlobalPlaceholders();
+			configuration.header().forEach(line -> headerLines.add(this.miniMessage.deserialize(line, player, miniPlaceholdersResolver)));
+			configuration.footer().forEach(line -> footerLines.add(this.miniMessage.deserialize(line, player, miniPlaceholdersResolver)));
 		} else {
 			configuration.header().forEach(line -> headerLines.add(this.miniMessage.deserialize(line)));
 			configuration.footer().forEach(line -> footerLines.add(this.miniMessage.deserialize(line)));
@@ -95,7 +95,8 @@ public final class ListManager {
 		if (this.isMiniPlaceholdersAvailable) {
 			nameComponent = this.miniMessage.deserialize(
 					nameString,
-					MiniPlaceholders.getAudienceGlobalPlaceholders(player)
+					player,
+					MiniPlaceholders.audienceGlobalPlaceholders()
 			);
 		} else {
 			nameComponent = this.miniMessage.deserialize(nameString);

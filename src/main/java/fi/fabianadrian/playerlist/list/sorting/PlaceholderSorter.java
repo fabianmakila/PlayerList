@@ -13,7 +13,7 @@ import java.util.Comparator;
 import java.util.Locale;
 
 public final class PlaceholderSorter extends Sorter {
-	private final MiniMessage miniMessage = MiniMessage.builder().build();
+	private final MiniMessage miniMessage = MiniMessage.miniMessage();
 	private final String placeholder;
 	private final boolean caseSensitive;
 
@@ -54,7 +54,8 @@ public final class PlaceholderSorter extends Sorter {
 	private String parseMiniPlaceholders(Player player) {
 		final Component deserialized = this.miniMessage.deserialize(
 				this.placeholder,
-				MiniPlaceholders.getAudienceGlobalPlaceholders(player)
+				player,
+				MiniPlaceholders.audienceGlobalPlaceholders()
 		);
 		String serialized = PlainTextComponentSerializer.plainText().serialize(deserialized);
 		if (!this.caseSensitive) {
