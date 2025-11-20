@@ -2,8 +2,8 @@ import xyz.jpenilla.resourcefactory.paper.PaperPluginYaml
 
 plugins {
 	id("java")
-	id("com.diffplug.spotless") version "7.2.1"
-	id("com.gradleup.shadow") version "9.1.0"
+	id("com.diffplug.spotless") version "8.1.0"
+	id("com.gradleup.shadow") version "9.2.2"
 	id("xyz.jpenilla.resource-factory-paper-convention") version "1.3.1"
 }
 
@@ -19,11 +19,11 @@ repositories {
 }
 
 dependencies {
-	compileOnly("io.papermc.paper:paper-api:1.21.8-R0.1-SNAPSHOT")
+	compileOnly("io.papermc.paper:paper-api:1.21.10-R0.1-SNAPSHOT")
 
 	compileOnly("net.luckperms:api:5.5")
 	compileOnly("me.clip:placeholderapi:2.11.6")
-	compileOnly("io.github.miniplaceholders:miniplaceholders-api:3.0.1")
+	compileOnly("io.github.miniplaceholders:miniplaceholders-api:3.1.0")
 
 	implementation("org.spongepowered:configurate-yaml:4.2.0")
 	implementation("org.bstats:bstats-bukkit:3.0.2")
