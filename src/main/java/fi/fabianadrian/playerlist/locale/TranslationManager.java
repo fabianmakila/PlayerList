@@ -11,16 +11,13 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public final class TranslationManager {
-	public static final Locale DEFAULT_LOCALE = Locale.ENGLISH;
-	public static final List<Locale> BUNDLED_LOCALES = List.of(DEFAULT_LOCALE, Locale.of("fi", "FI"));
+	public static final List<Locale> BUNDLED_LOCALES = List.of(Locale.ENGLISH, Locale.of("fi"));
 	private final Logger logger;
 	private final MiniMessageTranslationStore store;
 
 	public TranslationManager(PlayerList playerList) {
 		this.logger = playerList.getSLF4JLogger();
-
 		this.store = MiniMessageTranslationStore.create(Key.key("playerlist", "main"));
-		this.store.defaultLocale(DEFAULT_LOCALE);
 
 		loadFromResourceBundle();
 		GlobalTranslator.translator().addSource(this.store);
