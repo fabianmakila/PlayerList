@@ -16,6 +16,7 @@ repositories {
 	maven("https://repo.papermc.io/repository/maven-public/")
 	maven("https://repo.spongepowered.org/repository/maven-public/")
 	maven("https://repo.extendedclip.com/releases/")
+	maven("https://repo.faststats.dev/releases")
 }
 
 dependencies {
@@ -26,7 +27,7 @@ dependencies {
 	compileOnly("io.github.miniplaceholders:miniplaceholders-api:3.2.0")
 
 	implementation("org.spongepowered:configurate-yaml:4.2.0")
-	implementation("org.bstats:bstats-bukkit:3.0.2")
+	implementation("dev.faststats.metrics:bukkit:0.27.1")
 }
 
 paperPluginYaml {
@@ -58,7 +59,7 @@ paperPluginYaml {
 }
 
 java.toolchain {
-	languageVersion.set(JavaLanguageVersion.of(21))
+	languageVersion.set(JavaLanguageVersion.of(25))
 }
 
 spotless {
