@@ -2,13 +2,13 @@ import xyz.jpenilla.resourcefactory.paper.PaperPluginYaml
 
 plugins {
 	id("java")
-	id("com.diffplug.spotless") version "8.1.0"
-	id("com.gradleup.shadow") version "9.2.2"
+	id("com.diffplug.spotless") version "8.8.0"
+	id("com.gradleup.shadow") version "9.4.3"
 	id("xyz.jpenilla.resource-factory-paper-convention") version "1.3.1"
 }
 
 group = "fi.fabianadrian"
-version = "2.1.0"
+version = "2.1.1-SNAPSHOT"
 description = "A modern playerlist customization plugin."
 
 repositories {
@@ -19,11 +19,11 @@ repositories {
 }
 
 dependencies {
-	compileOnly("io.papermc.paper:paper-api:1.21.10-R0.1-SNAPSHOT")
+	compileOnly("io.papermc.paper:paper-api:26.1.2.build.+")
 
 	compileOnly("net.luckperms:api:5.5")
 	compileOnly("me.clip:placeholderapi:2.11.6")
-	compileOnly("io.github.miniplaceholders:miniplaceholders-api:3.1.0")
+	compileOnly("io.github.miniplaceholders:miniplaceholders-api:3.2.0")
 
 	implementation("org.spongepowered:configurate-yaml:4.2.0")
 	implementation("org.bstats:bstats-bukkit:3.0.2")
