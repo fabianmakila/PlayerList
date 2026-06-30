@@ -14,9 +14,8 @@ description = "A modern playerlist customization plugin."
 repositories {
 	mavenCentral()
 	maven("https://repo.papermc.io/repository/maven-public/")
-	maven("https://repo.spongepowered.org/repository/maven-public/")
-	maven("https://repo.extendedclip.com/releases/")
-	maven("https://repo.faststats.dev/releases")
+	maven("https://repo.extendedclip.com/releases/") // PlaceholderAPI
+	maven("https://repo.faststats.dev/releases") // FastStats
 }
 
 dependencies {
