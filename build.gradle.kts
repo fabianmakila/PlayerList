@@ -16,15 +16,22 @@ repositories {
 	maven("https://repo.papermc.io/repository/maven-public/")
 	maven("https://repo.extendedclip.com/releases/") // PlaceholderAPI
 	maven("https://repo.faststats.dev/releases") // FastStats
+	maven("https://eldonexus.de/repository/maven-public/") // StrokkCommands
 }
 
 dependencies {
 	compileOnly("io.papermc.paper:paper-api:26.1.2.build.+")
 
+	// Plugin dependencies
 	compileOnly("net.luckperms:api:5.5")
 	compileOnly("me.clip:placeholderapi:2.11.6")
 	compileOnly("io.github.miniplaceholders:miniplaceholders-api:3.2.0")
 
+	// StrokkCommands
+	compileOnly("net.strokkur.commands:annotations-paper:2.1.4")
+	annotationProcessor("net.strokkur.commands:processor-paper:2.1.4")
+
+	// Misc
 	implementation("org.spongepowered:configurate-yaml:4.2.0")
 	implementation("dev.faststats.metrics:bukkit:0.27.1")
 }

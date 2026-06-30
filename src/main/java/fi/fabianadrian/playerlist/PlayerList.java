@@ -3,7 +3,6 @@ package fi.fabianadrian.playerlist;
 import dev.faststats.ErrorTracker;
 import dev.faststats.Metrics;
 import dev.faststats.bukkit.BukkitContext;
-import fi.fabianadrian.playerlist.command.PlayerListCommand;
 import fi.fabianadrian.playerlist.configuration.Configuration;
 import fi.fabianadrian.playerlist.configuration.ConfigurationManager;
 import fi.fabianadrian.playerlist.list.ListManager;
@@ -83,9 +82,10 @@ public final class PlayerList extends JavaPlugin {
 	}
 
 	private void registerCommands() {
-		this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, commands -> {
-			commands.registrar().register(new PlayerListCommand(this).command());
-		});
+		this.getLifecycleManager().registerEventHandler(
+				LifecycleEvents.COMMANDS,
+				commands -> commands.registrar().register(PlayerListCommandBrigadier.create(this))
+		);
 	}
 
 	private void registerListeners() {
