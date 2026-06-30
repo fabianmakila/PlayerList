@@ -80,13 +80,5 @@ tasks {
 	}
 	shadowJar {
 		minimize()
-		sequenceOf(
-			"io.leangen.geantyref",
-			"net.kyori.option",
-			"org.bstats",
-			"org.spongepowered.configurate"
-		).forEach {
-			relocate(it, "fi.fabianadrian.playerlist.dependency.$it")
-		}
 	}
 }
