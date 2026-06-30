@@ -24,7 +24,7 @@ public final class PlayerListCommand {
 						.requires(stack -> stack.getSender().hasPermission(PERMISSION_RELOAD))
 						.executes(ctx -> {
 							try {
-								this.plugin.reload();
+								this.plugin.load();
 								ctx.getSource().getSender().sendMessage(COMPONENT_RELOAD_SUCCESS);
 							} catch (ConfigurateException e) {
 								this.plugin.getSLF4JLogger().error("Couldn't load configuration", e);

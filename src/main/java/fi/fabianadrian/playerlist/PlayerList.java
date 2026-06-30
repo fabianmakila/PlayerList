@@ -28,26 +28,27 @@ public final class PlayerList extends JavaPlugin {
 			.errorTrackerService(ERROR_TRACKER)
 			.metrics(Metrics.Factory::create)
 			.create();
-	private ConfigurationManager configurationManager;
-	private ListManager listManager;
+	private final ConfigurationManager configurationManager;
+	private final ListManager listManager;
+
+	public PlayerList() {
+		new TranslationManager(this);
+		this.configurationManager = new ConfigurationManager(this);
+		this.listManager = new ListManager(this);
+	}
 
 	@Override
 	public void onEnable() {
 		this.context.ready();
 
-		new TranslationManager(this);
 
-		this.configurationManager = new ConfigurationManager(this);
 		try {
-			this.configurationManager.reload();
+			load();
 		} catch (ConfigurateException e) {
 			getSLF4JLogger().error("Couldn't load configuration", e);
 			getServer().getPluginManager().disablePlugin(this);
 			return;
 		}
-
-		this.listManager = new ListManager(this);
-		this.listManager.reload();
 
 		registerCommands();
 		registerListeners();
@@ -62,7 +63,7 @@ public final class PlayerList extends JavaPlugin {
 		return this.configurationManager.configuration();
 	}
 
-	public void reload() throws ConfigurateException {
+	public void load() throws ConfigurateException {
 		this.configurationManager.reload();
 		this.listManager.reload();
 	}
