@@ -1,6 +1,7 @@
-package fi.fabianadrian.playerlist.list.sorting;
+package fi.fabianadrian.playerlist.list.sorter;
 
 import fi.fabianadrian.playerlist.PlayerList;
+import fi.fabianadrian.playerlist.config.sorter.PlaceholderSorterConfig;
 import io.github.miniplaceholders.api.MiniPlaceholders;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
@@ -13,17 +14,19 @@ import java.util.Comparator;
 import java.util.Locale;
 
 public final class PlaceholderSorter extends Sorter {
-	private final MiniMessage miniMessage = MiniMessage.miniMessage();
 	private final String placeholder;
 	private final boolean caseSensitive;
+	private final MiniMessage miniMessage;
+	private Comparator<Player> comparator;
 
-	public PlaceholderSorter(PlayerList plugin, SortingOrder order, String placeholder, boolean caseSensitive) {
-		super(SorterType.PLACEHOLDER, order);
-		this.placeholder = placeholder;
-		this.caseSensitive = caseSensitive;
+	public PlaceholderSorter(PlayerList plugin, PlaceholderSorterConfig config) {
+		super(config.order());
+		this.miniMessage = plugin.miniMessage();
+		this.placeholder = config.placeholder();
+		this.caseSensitive = config.caseSensitive();
 
 		PluginManager pluginManager = plugin.getServer().getPluginManager();
-		switch (placeholder.charAt(0)) {
+		switch (this.placeholder.charAt(0)) {
 			case '<' -> {
 				if (!pluginManager.isPluginEnabled("MiniPlaceholders")) {
 					plugin.getSLF4JLogger().warn("MiniPlaceholders is not enabled. Placeholder sorter for {} will be non-functional", placeholder);
@@ -41,14 +44,6 @@ public final class PlaceholderSorter extends Sorter {
 			default ->
 					plugin.getSLF4JLogger().warn("{} is neither MiniPlaceholders or PlaceholderAPI placeholder. Sorter will be non-functional", placeholder);
 		}
-	}
-
-	public String placeholder() {
-		return this.placeholder;
-	}
-
-	public boolean caseSensitive() {
-		return this.caseSensitive;
 	}
 
 	private String parseMiniPlaceholders(Player player) {
@@ -70,5 +65,10 @@ public final class PlaceholderSorter extends Sorter {
 			parsed = parsed.toLowerCase(Locale.ROOT);
 		}
 		return parsed;
+	}
+
+	@Override
+	protected Comparator<Player> comparator() {
+		return this.comparator;
 	}
 }

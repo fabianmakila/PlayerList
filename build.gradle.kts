@@ -32,7 +32,7 @@ dependencies {
 	annotationProcessor("net.strokkur.commands:processor-paper:2.1.4")
 
 	// Misc
-	implementation("org.spongepowered:configurate-yaml:4.2.0")
+	implementation("space.arim.dazzleconf:dazzleconf-toml:2.0.0-M3")
 	implementation("dev.faststats.metrics:bukkit:0.27.1")
 }
 

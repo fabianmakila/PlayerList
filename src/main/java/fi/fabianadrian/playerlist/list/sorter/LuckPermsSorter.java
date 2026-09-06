@@ -1,5 +1,7 @@
-package fi.fabianadrian.playerlist.list.sorting;
+package fi.fabianadrian.playerlist.list.sorter;
 
+import fi.fabianadrian.playerlist.config.sorter.luckperms.LuckPermsSorterConfig;
+import fi.fabianadrian.playerlist.config.sorter.luckperms.LuckPermsSorterCriteria;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.group.Group;
@@ -10,22 +12,19 @@ import java.util.Comparator;
 import java.util.Iterator;
 
 public final class LuckPermsSorter extends Sorter {
-	private final Criteria criteria;
+	private final LuckPermsSorterCriteria criteria;
+	private final Comparator<Player> comparator;
 	private LuckPerms api = null;
 
-	public LuckPermsSorter(SortingOrder order, Criteria criteria) {
-		super(SorterType.LUCKPERMS, order);
-		super.comparator = Comparator.comparingInt(this::weight);
-		this.criteria = criteria;
+	public LuckPermsSorter(LuckPermsSorterConfig config) {
+		super(config.order());
+		this.comparator = Comparator.comparingInt(this::weight);
+		this.criteria = config.criteria();
 
 		try {
 			this.api = LuckPermsProvider.get();
 		} catch (IllegalStateException | NoClassDefFoundError ignored) {
 		}
-	}
-
-	public Criteria criteria() {
-		return this.criteria;
 	}
 
 	private int weight(Player player) {
@@ -87,7 +86,8 @@ public final class LuckPermsSorter extends Sorter {
 		return this.api.getPlayerAdapter(Player.class).getUser(player);
 	}
 
-	public enum Criteria {
-		PREFIX_WEIGHT, SUFFIX_WEIGHT, GROUP_WEIGHT
+	@Override
+	protected Comparator<Player> comparator() {
+		return this.comparator;
 	}
 }
