@@ -4,12 +4,13 @@ import fi.fabianadrian.playerlist.config.group.ExampleGroupConfig;
 import fi.fabianadrian.playerlist.config.group.GroupConfig;
 import fi.fabianadrian.playerlist.config.sorter.SorterConfig;
 import fi.fabianadrian.playerlist.config.sorter.player.PlayerSorterConfig;
+import space.arim.dazzleconf.engine.liaison.SubSection;
 
 import java.util.List;
 import java.util.Map;
 
 public interface Config {
-	default Map<String, GroupConfig> groups() {
+	default Map<String, @SubSection GroupConfig> groups() {
 		return Map.of("example", new ExampleGroupConfig());
 	}
 
