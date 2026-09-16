@@ -10,6 +10,7 @@ import net.kyori.adventure.text.JoinConfiguration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -41,21 +42,7 @@ public final class ListManager {
 		this.comparator = this.sorterFactory.comparator(config.sorters());
 
 		this.worldSettingsMap.clear();
-		this.plugin.getServer().getWorlds().forEach(world -> {
-			List<String> header = List.of();
-			List<String> footer = List.of();
-			String playerListName = null;
-
-			for (GroupConfig group : config.groups().values()) {
-				if (!group.regex().matcher(world.getName()).matches()) {
-					continue;
-				}
-				header = group.header().orElse(header);
-				footer = group.footer().orElse(footer);
-				playerListName = group.playerListName().orElse(playerListName);
-			}
-			this.worldSettingsMap.put(world.getUID(), new ListSettings(header, footer, playerListName));
-		});
+		this.plugin.getServer().getWorlds().forEach(this::loadWorld);
 
 		this.isMiniPlaceholdersAvailable = this.plugin.getServer().getPluginManager().isPluginEnabled("MiniPlaceholders");
 
@@ -68,6 +55,26 @@ public final class ListManager {
 				config.placeholderRefreshInterval(),
 				TimeUnit.SECONDS
 		);
+	}
+
+	public void loadWorld(World world) {
+		List<String> header = List.of();
+		List<String> footer = List.of();
+		String playerListName = null;
+
+		for (GroupConfig group : this.plugin.config().groups().values()) {
+			if (!group.regex().matcher(world.getName()).matches()) {
+				continue;
+			}
+			header = group.header().orElse(header);
+			footer = group.footer().orElse(footer);
+			playerListName = group.playerListName().orElse(playerListName);
+		}
+		this.worldSettingsMap.put(world.getUID(), new ListSettings(header, footer, playerListName));
+	}
+
+	public void unloadWorld(World world) {
+		this.worldSettingsMap.remove(world.getUID());
 	}
 
 	// Called when a player joins / changes world

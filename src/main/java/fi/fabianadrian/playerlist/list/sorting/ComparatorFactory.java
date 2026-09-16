@@ -31,7 +31,15 @@ public final class ComparatorFactory {
 			return new PlaceholderSorter(this.plugin, placeholderSorterConfig).build();
 		}
 		if (config instanceof LuckPermsSorterConfig luckPermsSorterConfig) {
-			return new LuckPermsSorter(luckPermsSorterConfig).build();
+			if (!this.plugin.getServer().getPluginManager().isPluginEnabled("LuckPerms")) {
+				this.plugin.getSLF4JLogger().warn("LuckPerms isn't enabled. Sorter will be non-functional");
+				return null;
+			}
+			try {
+				return new LuckPermsSorter(luckPermsSorterConfig).build();
+			} catch (IllegalStateException | NoClassDefFoundError throwable) {
+				this.plugin.getSLF4JLogger().error("Failed to construct LuckPermsSorter", throwable);
+			}
 		}
 		if (config instanceof PlayerSorterConfig playerSorterConfig) {
 			return new PlayerSorter(playerSorterConfig).build();

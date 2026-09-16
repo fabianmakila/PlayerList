@@ -3,6 +3,7 @@ package fi.fabianadrian.playerlist.config;
 import fi.fabianadrian.playerlist.config.group.ExampleGroupConfig;
 import fi.fabianadrian.playerlist.config.group.GroupConfig;
 import fi.fabianadrian.playerlist.config.sorter.SorterConfig;
+import fi.fabianadrian.playerlist.config.sorter.luckperms.LuckPermsSorterConfig;
 import fi.fabianadrian.playerlist.config.sorter.player.PlayerSorterConfig;
 import space.arim.dazzleconf.engine.liaison.SubSection;
 
@@ -15,8 +16,11 @@ public interface Config {
 	}
 
 	default List<SorterConfig> sorters() {
-		return List.of(new PlayerSorterConfig() {
-		});
+		return List.of(
+				new PlayerSorterConfig() {
+				},
+				new LuckPermsSorterConfig() {
+				});
 	}
 
 	default int placeholderRefreshInterval() {
