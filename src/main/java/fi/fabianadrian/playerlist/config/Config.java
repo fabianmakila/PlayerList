@@ -5,6 +5,7 @@ import fi.fabianadrian.playerlist.config.group.GroupConfig;
 import fi.fabianadrian.playerlist.config.sorter.SorterConfig;
 import fi.fabianadrian.playerlist.config.sorter.luckperms.LuckPermsSorterConfig;
 import fi.fabianadrian.playerlist.config.sorter.player.PlayerSorterConfig;
+import space.arim.dazzleconf.engine.Comments;
 import space.arim.dazzleconf.engine.liaison.SubSection;
 
 import java.util.List;
@@ -23,7 +24,9 @@ public interface Config {
 				});
 	}
 
-	default int placeholderRefreshInterval() {
-		return 5;
+	@Comments("Time in milliseconds how often the player list is updated")
+	@Comments("If you have rapidly changing placeholders you might want to reduce this")
+	default int updateIntervalMilliSeconds() {
+		return 5000;
 	}
 }

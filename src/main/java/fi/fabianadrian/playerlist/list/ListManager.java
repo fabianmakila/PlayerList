@@ -52,8 +52,8 @@ public final class ListManager {
 					sort();
 				}),
 				0,
-				config.placeholderRefreshInterval(),
-				TimeUnit.SECONDS
+				config.updateIntervalMilliSeconds(),
+				TimeUnit.MILLISECONDS
 		);
 	}
 
