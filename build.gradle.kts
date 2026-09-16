@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "fi.fabianadrian"
-version = "2.1.1-SNAPSHOT"
+version = "3.0.0-SNAPSHOT"
 description = "A modern playerlist customization plugin."
 
 repositories {
