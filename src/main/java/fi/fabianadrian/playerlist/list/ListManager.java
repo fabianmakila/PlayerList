@@ -3,7 +3,7 @@ package fi.fabianadrian.playerlist.list;
 import fi.fabianadrian.playerlist.PlayerList;
 import fi.fabianadrian.playerlist.config.Config;
 import fi.fabianadrian.playerlist.config.group.GroupConfig;
-import fi.fabianadrian.playerlist.list.sorter.ComparatorFactory;
+import fi.fabianadrian.playerlist.list.sorting.ComparatorFactory;
 import io.github.miniplaceholders.api.MiniPlaceholders;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.JoinConfiguration;

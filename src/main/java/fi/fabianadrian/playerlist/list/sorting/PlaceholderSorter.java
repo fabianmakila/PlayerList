@@ -1,4 +1,4 @@
-package fi.fabianadrian.playerlist.list.sorter;
+package fi.fabianadrian.playerlist.list.sorting;
 
 import fi.fabianadrian.playerlist.PlayerList;
 import fi.fabianadrian.playerlist.config.sorter.PlaceholderSorterConfig;
@@ -41,8 +41,10 @@ public final class PlaceholderSorter extends Sorter {
 				}
 				this.comparator = Comparator.comparing(this::parsePlaceholderAPI);
 			}
-			default ->
-					plugin.getSLF4JLogger().warn("{} is neither MiniPlaceholders or PlaceholderAPI placeholder. Sorter will be non-functional", placeholder);
+			default -> {
+				plugin.getSLF4JLogger().warn("{} is neither MiniPlaceholders or PlaceholderAPI placeholder. Sorter will be non-functional", placeholder);
+				this.comparator = null;
+			}
 		}
 	}
 
