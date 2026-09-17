@@ -39,7 +39,7 @@ public final class ListManager {
 		}
 
 		Config config = this.plugin.config();
-		this.comparator = this.sorterFactory.comparator(config.sorters());
+		this.comparator = this.sorterFactory.comparator(config.sorter());
 
 		this.worldSettingsMap.clear();
 		this.plugin.getServer().getWorlds().forEach(this::loadWorld);
@@ -62,7 +62,7 @@ public final class ListManager {
 		List<String> footer = List.of();
 		String playerListName = null;
 
-		for (GroupConfig group : this.plugin.config().groups().values()) {
+		for (GroupConfig group : this.plugin.config().group()) {
 			if (!group.regex().matcher(world.getName()).matches()) {
 				continue;
 			}
@@ -132,7 +132,7 @@ public final class ListManager {
 			player.playerListName(this.miniMessage.deserialize(
 					settings.name(),
 					player,
-					MiniPlaceholders.audienceGlobalPlaceholders()
+					miniPlaceholdersResolver
 			));
 		}
 	}

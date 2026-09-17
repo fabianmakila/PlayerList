@@ -17,6 +17,7 @@ public final class PlayerListener implements Listener {
 
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event) {
+		this.listManager.track(event.getPlayer());
 		this.listManager.sort(); //TODO Should this be delayed couple of ticks (due to placeholder sorter etc)?
 	}
 

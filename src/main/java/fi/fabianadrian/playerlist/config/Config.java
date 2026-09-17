@@ -10,22 +10,21 @@ import space.arim.dazzleconf.engine.Comments;
 import space.arim.dazzleconf.engine.liaison.SubSection;
 
 import java.util.List;
-import java.util.Map;
 
 public interface Config {
 	@Comments("Groups allow you to apply same options to multiple worlds")
 	@Comments("Highest group gets applied first and lowest group gets applied last")
-	default Map<String, @SubSection GroupConfig> groups() {
-		return Map.of(
-				"example", new ExampleGroupConfig(),
-				"example-nether", new ExampleNetherOverrideConfig()
+	default List<@SubSection GroupConfig> group() {
+		return List.of(
+				new ExampleGroupConfig(),
+				new ExampleNetherOverrideConfig()
 		);
 	}
 
 	@Comments("Sorters control how the player list entries are sorted")
 	@Comments("You can add as many sorters as you want")
 	@Comments("Sorters defined higher in the config file have higher priority")
-	default List<SorterConfig> sorters() {
+	default List<SorterConfig> sorter() {
 		return List.of(
 				new PlayerSorterConfig() {
 				},
