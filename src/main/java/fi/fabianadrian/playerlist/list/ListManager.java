@@ -52,7 +52,7 @@ public final class ListManager {
 					sort();
 				}),
 				0,
-				config.updateIntervalMilliSeconds(),
+				config.updateIntervalMilliseconds(),
 				TimeUnit.MILLISECONDS
 		);
 	}
