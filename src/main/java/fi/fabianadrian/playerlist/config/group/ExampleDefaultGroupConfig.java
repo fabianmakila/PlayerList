@@ -24,7 +24,7 @@ public final class ExampleDefaultGroupConfig implements GroupConfig {
 		return Optional.of(List.of(
 				"<rainbow>Every string in a group config supports MiniMessage and MiniPlaceholders",
 				"<#04c2ff>The player-list-name in this example uses MiniPlaceholders to display a player's prefix from LuckPerms",
-				"If you don't want a header, footer or a custom player list name, you can delete the whole option from the group"
+				"Apart from the regex, all group options are optional and can be left out if you don't need them"
 		));
 	}
 
