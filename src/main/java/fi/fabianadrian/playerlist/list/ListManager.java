@@ -43,6 +43,7 @@ public final class ListManager {
 
 		this.worldSettingsMap.clear();
 		this.plugin.getServer().getWorlds().forEach(this::loadWorld);
+		this.plugin.getServer().getOnlinePlayers().forEach(this::track);
 
 		this.isMiniPlaceholdersAvailable = this.plugin.getServer().getPluginManager().isPluginEnabled("MiniPlaceholders");
 
