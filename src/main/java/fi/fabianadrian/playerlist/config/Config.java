@@ -27,10 +27,11 @@ public interface Config {
 	@Comments("This works like sorting a spreadsheet by multiple columns: the first sorter sorts everything, and any players it can't separate are then sorted by the next one, and so on")
 	default List<SorterConfig> sorter() {
 		return List.of(
-				new PlayerSorterConfig() {
-				},
 				new LuckPermsSorterConfig() {
-				});
+				},
+				new PlayerSorterConfig() {
+				}
+		);
 	}
 
 	@Comments("How often the player list is updated, in milliseconds")

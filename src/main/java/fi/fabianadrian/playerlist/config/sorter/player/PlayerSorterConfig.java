@@ -12,4 +12,8 @@ public interface PlayerSorterConfig extends SorterConfig {
 	default PlayerSorterCriteria criteria() {
 		return PlayerSorterCriteria.NAME;
 	}
+
+	default boolean caseSensitive() {
+		return false;
+	}
 }
