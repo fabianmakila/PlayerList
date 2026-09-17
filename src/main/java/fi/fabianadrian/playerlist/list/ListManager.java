@@ -62,14 +62,21 @@ public final class ListManager {
 		List<String> footer = List.of();
 		String playerListName = null;
 
+		boolean matched = false;
 		for (GroupConfig group : this.plugin.config().group()) {
 			if (!group.regex().matcher(world.getName()).matches()) {
 				continue;
 			}
+			matched = true;
 			header = group.header().orElse(header);
 			footer = group.footer().orElse(footer);
 			playerListName = group.playerListName().orElse(playerListName);
 		}
+
+		if (!matched) {
+			return;
+		}
+
 		this.worldSettingsMap.put(world.getUID(), new ListSettings(header, footer, playerListName));
 	}
 
