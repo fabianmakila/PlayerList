@@ -16,7 +16,7 @@ public abstract class Sorter {
 		if (comparator == null) {
 			return null;
 		}
-		return this.order == SortingOrder.DESCENDING ? comparator.reversed() : comparator;
+		return this.order == SortingOrder.ASCENDING ? comparator.reversed() : comparator;
 	}
 
 	protected abstract Comparator<Player> comparator();
