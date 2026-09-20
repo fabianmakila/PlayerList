@@ -5,7 +5,7 @@ plugins {
 	id("com.diffplug.spotless") version "8.10.2"
 	id("com.gradleup.shadow") version "9.6.1"
 	id("xyz.jpenilla.resource-factory-paper-convention") version "1.3.1"
-	id("io.github.ben-manes.versions") version "0.63.1"
+	id("io.github.ben-manes.versions") version "0.64.0"
 }
 
 group = "fi.fabianadrian"
@@ -32,8 +32,10 @@ dependencies {
 	compileOnly("net.strokkur.commands:annotations-paper:2.3.0")
 	annotationProcessor("net.strokkur.commands:processor-paper:2.3.0")
 
-	// Misc
+	// Configuration
 	implementation("space.arim.dazzleconf:dazzleconf-toml:2.0.0-M3")
+	compileOnly("org.apiguardian:apiguardian-api:1.1.2")
+
 	implementation("dev.faststats.metrics:bukkit:0.30.1")
 }
 
