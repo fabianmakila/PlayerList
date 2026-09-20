@@ -9,8 +9,8 @@ plugins {
 }
 
 group = "fi.fabianadrian"
-version = "3.0.0-SNAPSHOT"
-description = "A modern playerlist customization plugin."
+version = "3.0.0"
+description = "A modern playerlist customization plugin"
 
 repositories {
 	mavenCentral()
