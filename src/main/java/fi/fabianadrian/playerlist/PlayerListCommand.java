@@ -1,11 +1,11 @@
 package fi.fabianadrian.playerlist;
 
+import fi.fabianadrian.playerlist.config.ConfigLoadException;
 import net.kyori.adventure.text.Component;
 import net.strokkur.commands.Command;
 import net.strokkur.commands.Executes;
 import net.strokkur.commands.permission.Permission;
 import org.bukkit.command.CommandSender;
-import org.spongepowered.configurate.ConfigurateException;
 
 @Command("playerlist")
 public final class PlayerListCommand {
@@ -23,7 +23,7 @@ public final class PlayerListCommand {
 		try {
 			this.plugin.load();
 			sender.sendMessage(COMPONENT_RELOAD_SUCCESS);
-		} catch (ConfigurateException e) {
+		} catch (ConfigLoadException e) {
 			this.plugin.getSLF4JLogger().error("Couldn't load configuration", e);
 			sender.sendMessage(COMPONENT_RELOAD_FAILED);
 		}

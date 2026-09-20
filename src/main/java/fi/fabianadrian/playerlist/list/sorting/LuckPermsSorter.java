@@ -1,93 +1,55 @@
 package fi.fabianadrian.playerlist.list.sorting;
 
+import fi.fabianadrian.playerlist.config.sorter.luckperms.LuckPermsSorterConfig;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.group.Group;
-import net.luckperms.api.model.user.User;
+import net.luckperms.api.model.group.GroupManager;
+import net.luckperms.api.platform.PlayerAdapter;
 import org.bukkit.entity.Player;
 
 import java.util.Comparator;
-import java.util.Iterator;
+import java.util.SortedMap;
 
 public final class LuckPermsSorter extends Sorter {
-	private final Criteria criteria;
-	private LuckPerms api = null;
+	private final Comparator<Player> comparator;
+	private final PlayerAdapter<Player> adapter;
+	private final GroupManager groupManager;
 
-	public LuckPermsSorter(SortingOrder order, Criteria criteria) {
-		super(SorterType.LUCKPERMS, order);
-		super.comparator = Comparator.comparingInt(this::weight);
-		this.criteria = criteria;
+	public LuckPermsSorter(LuckPermsSorterConfig config) {
+		super(config.order());
 
-		try {
-			this.api = LuckPermsProvider.get();
-		} catch (IllegalStateException | NoClassDefFoundError ignored) {
-		}
-	}
+		LuckPerms api = LuckPermsProvider.get();
+		this.adapter = api.getPlayerAdapter(Player.class);
+		this.groupManager = api.getGroupManager();
 
-	public Criteria criteria() {
-		return this.criteria;
-	}
-
-	private int weight(Player player) {
-		if (this.api == null) {
-			return 0;
-		}
-
-		int weight;
-		switch (this.criteria) {
-			case PREFIX_WEIGHT -> weight = highestPrefixWeight(player);
-			case SUFFIX_WEIGHT -> weight = highestSuffixWeight(player);
-			case GROUP_WEIGHT -> weight = primaryGroupWeight(player);
+		switch (config.criteria()) {
+			case PREFIX_WEIGHT -> this.comparator = Comparator.comparingInt(this::highestPrefixWeight);
+			case SUFFIX_WEIGHT -> this.comparator = Comparator.comparingInt(this::highestSuffixWeight);
+			case GROUP_WEIGHT -> this.comparator = Comparator.comparingInt(this::primaryGroupWeight);
 			default -> throw new IllegalStateException("Unknown criteria");
 		}
+	}
 
-		return weight;
+	@Override
+	protected Comparator<Player> comparator() {
+		return this.comparator;
 	}
 
 	private int highestPrefixWeight(Player player) {
-		User user = user(player);
-
-		Iterator<Integer> prefixWeights = user.getCachedData().getMetaData().getPrefixes().keySet().iterator();
-
-		int highestWeight = 0;
-		if (prefixWeights.hasNext()) {
-			highestWeight = prefixWeights.next();
-		}
-
-		return highestWeight;
+		SortedMap<Integer, String> prefixes = this.adapter.getUser(player).getCachedData().getMetaData().getPrefixes();
+		return prefixes.isEmpty() ? 0 : prefixes.firstKey();
 	}
 
 	private int highestSuffixWeight(Player player) {
-		User user = user(player);
+		SortedMap<Integer, String> suffixes = this.adapter.getUser(player).getCachedData().getMetaData().getSuffixes();
+		return suffixes.isEmpty() ? 0 : suffixes.firstKey();
 
-		Iterator<Integer> weights = user.getCachedData().getMetaData().getSuffixes().keySet().iterator();
-
-		int highestWeight = 0;
-		if (weights.hasNext()) {
-			highestWeight = weights.next();
-		}
-
-		return highestWeight;
 	}
 
 	private int primaryGroupWeight(Player player) {
-		User user = user(player);
+		Group primaryGroup = this.groupManager.getGroup(this.adapter.getUser(player).getPrimaryGroup());
+		return primaryGroup == null ? 0 : primaryGroup.getWeight().orElse(0);
 
-		String primaryGroupName = user.getPrimaryGroup();
-
-		Group primaryGroup = this.api.getGroupManager().getGroup(primaryGroupName);
-		if (primaryGroup == null) {
-			return 0;
-		}
-
-		return primaryGroup.getWeight().orElse(0);
-	}
-
-	private User user(Player player) {
-		return this.api.getPlayerAdapter(Player.class).getUser(player);
-	}
-
-	public enum Criteria {
-		PREFIX_WEIGHT, SUFFIX_WEIGHT, GROUP_WEIGHT
 	}
 }

@@ -2,14 +2,15 @@ import xyz.jpenilla.resourcefactory.paper.PaperPluginYaml
 
 plugins {
 	id("java")
-	id("com.diffplug.spotless") version "8.8.0"
-	id("com.gradleup.shadow") version "9.4.3"
+	id("com.diffplug.spotless") version "8.10.2"
+	id("com.gradleup.shadow") version "9.6.1"
 	id("xyz.jpenilla.resource-factory-paper-convention") version "1.3.1"
+	id("io.github.ben-manes.versions") version "0.64.0"
 }
 
 group = "fi.fabianadrian"
-version = "2.1.1-SNAPSHOT"
-description = "A modern playerlist customization plugin."
+version = "3.0.0"
+description = "A modern playerlist customization plugin"
 
 repositories {
 	mavenCentral()
@@ -20,20 +21,22 @@ repositories {
 }
 
 dependencies {
-	compileOnly("io.papermc.paper:paper-api:26.1.2.build.+")
+	compileOnly("io.papermc.paper:paper-api:26.2.build.+")
 
 	// Plugin dependencies
 	compileOnly("net.luckperms:api:5.5")
-	compileOnly("me.clip:placeholderapi:2.11.6")
+	compileOnly("me.clip:placeholderapi:2.12.3")
 	compileOnly("io.github.miniplaceholders:miniplaceholders-api:3.2.0")
 
 	// StrokkCommands
-	compileOnly("net.strokkur.commands:annotations-paper:2.1.4")
-	annotationProcessor("net.strokkur.commands:processor-paper:2.1.4")
+	compileOnly("net.strokkur.commands:annotations-paper:2.3.0")
+	annotationProcessor("net.strokkur.commands:processor-paper:2.3.0")
 
-	// Misc
-	implementation("org.spongepowered:configurate-yaml:4.2.0")
-	implementation("dev.faststats.metrics:bukkit:0.27.1")
+	// Configuration
+	implementation("space.arim.dazzleconf:dazzleconf-toml:2.0.0-M3")
+	compileOnly("org.apiguardian:apiguardian-api:1.1.2")
+
+	implementation("dev.faststats.metrics:bukkit:0.30.1")
 }
 
 paperPluginYaml {

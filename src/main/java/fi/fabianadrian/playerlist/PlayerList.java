@@ -3,20 +3,17 @@ package fi.fabianadrian.playerlist;
 import dev.faststats.ErrorTracker;
 import dev.faststats.Metrics;
 import dev.faststats.bukkit.BukkitContext;
-import fi.fabianadrian.playerlist.configuration.Configuration;
-import fi.fabianadrian.playerlist.configuration.ConfigurationManager;
+import fi.fabianadrian.playerlist.config.Config;
+import fi.fabianadrian.playerlist.config.ConfigManager;
 import fi.fabianadrian.playerlist.list.ListManager;
-import fi.fabianadrian.playerlist.listener.JoinListener;
+import fi.fabianadrian.playerlist.listener.PlayerListener;
 import fi.fabianadrian.playerlist.locale.TranslationManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
-import org.bukkit.entity.Player;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.spongepowered.configurate.ConfigurateException;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -27,28 +24,20 @@ public final class PlayerList extends JavaPlugin {
 			.errorTrackerService(ERROR_TRACKER)
 			.metrics(Metrics.Factory::create)
 			.create();
-	private final ConfigurationManager configurationManager;
+	private final ConfigManager configManager;
 	private final ListManager listManager;
+	private final MiniMessage miniMessage = MiniMessage.miniMessage();
 
 	public PlayerList() {
 		new TranslationManager(this);
-		this.configurationManager = new ConfigurationManager(this);
+		this.configManager = new ConfigManager(this);
 		this.listManager = new ListManager(this);
 	}
 
 	@Override
 	public void onEnable() {
 		this.context.ready();
-
-
-		try {
-			load();
-		} catch (ConfigurateException e) {
-			getSLF4JLogger().error("Couldn't load configuration", e);
-			getServer().getPluginManager().disablePlugin(this);
-			return;
-		}
-
+		load();
 		registerCommands();
 		registerListeners();
 	}
@@ -58,27 +47,25 @@ public final class PlayerList extends JavaPlugin {
 		this.context.shutdown();
 	}
 
-	public Configuration configuration() {
-		return this.configurationManager.configuration();
+	public Config config() {
+		return this.configManager.config();
 	}
 
-	public void load() throws ConfigurateException {
-		this.configurationManager.reload();
-		this.listManager.reload();
+	public void load() {
+		this.configManager.load();
+		this.listManager.load();
 	}
 
 	public ScheduledExecutorService executorService() {
 		return this.executorService;
 	}
 
-	public CompletableFuture<List<Player>> onlinePlayers() {
-		CompletableFuture<List<Player>> onlinePlayersFuture = new CompletableFuture<>();
-		getServer().getScheduler().runTask(this, () -> onlinePlayersFuture.complete(new ArrayList<>(getServer().getOnlinePlayers())));
-		return onlinePlayersFuture;
-	}
-
 	public ListManager playerListManager() {
 		return this.listManager;
+	}
+
+	public MiniMessage miniMessage() {
+		return this.miniMessage;
 	}
 
 	private void registerCommands() {
@@ -91,7 +78,7 @@ public final class PlayerList extends JavaPlugin {
 	private void registerListeners() {
 		PluginManager manager = getServer().getPluginManager();
 		List.of(
-				new JoinListener(this)
+				new PlayerListener(this)
 		).forEach(listener -> manager.registerEvents(listener, this));
 	}
 }

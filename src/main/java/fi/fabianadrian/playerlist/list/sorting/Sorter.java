@@ -5,28 +5,19 @@ import org.bukkit.entity.Player;
 import java.util.Comparator;
 
 public abstract class Sorter {
-	private final SortingOrder order;
-	private final SorterType type;
-	protected Comparator<Player> comparator;
+	protected final SortingOrder order;
 
-	public Sorter(SorterType type, SortingOrder order) {
-		this.type = type;
+	public Sorter(SortingOrder order) {
 		this.order = order;
 	}
 
-	public SorterType type() {
-		return this.type;
-	}
-
-	public SortingOrder order() {
-		return this.order;
-	}
-
-	public Comparator<Player> comparator() {
-		if (this.order == SortingOrder.DESCENDING || comparator == null) {
-			return comparator;
-		} else {
-			return comparator.reversed();
+	public Comparator<Player> build() {
+		Comparator<Player> comparator = comparator();
+		if (comparator == null) {
+			return null;
 		}
+		return this.order == SortingOrder.ASCENDING ? comparator.reversed() : comparator;
 	}
+
+	protected abstract Comparator<Player> comparator();
 }
