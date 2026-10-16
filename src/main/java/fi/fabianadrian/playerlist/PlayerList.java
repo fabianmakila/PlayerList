@@ -7,6 +7,7 @@ import fi.fabianadrian.playerlist.config.Config;
 import fi.fabianadrian.playerlist.config.ConfigManager;
 import fi.fabianadrian.playerlist.list.ListManager;
 import fi.fabianadrian.playerlist.listener.PlayerListener;
+import fi.fabianadrian.playerlist.listener.WorldListener;
 import fi.fabianadrian.playerlist.locale.TranslationManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -78,7 +79,8 @@ public final class PlayerList extends JavaPlugin {
 	private void registerListeners() {
 		PluginManager manager = getServer().getPluginManager();
 		List.of(
-				new PlayerListener(this)
+				new PlayerListener(this),
+				new WorldListener(this)
 		).forEach(listener -> manager.registerEvents(listener, this));
 	}
 }
