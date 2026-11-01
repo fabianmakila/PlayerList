@@ -2,23 +2,33 @@ package fi.fabianadrian.playerlist.config.sorter;
 
 import fi.fabianadrian.playerlist.config.sorter.luckperms.LuckPermsSorterConfig;
 import fi.fabianadrian.playerlist.config.sorter.player.PlayerSorterConfig;
-import space.arim.dazzleconf.reflect.TypeToken;
+
+import java.util.Arrays;
 
 public enum SorterType {
-	PLACEHOLDER(new TypeToken<PlaceholderSorterConfig>() {
-	}),
-	PLAYER(new TypeToken<PlayerSorterConfig>() {
-	}),
-	LUCKPERMS(new TypeToken<LuckPermsSorterConfig>() {
-	});
+	PLACEHOLDER(PlaceholderSorterConfig.class),
+	PLAYER(PlayerSorterConfig.class),
+	LUCKPERMS(LuckPermsSorterConfig.class);
 
-	private final TypeToken<? extends SorterConfig> typeToken;
+	private final Class<? extends SorterConfig> sorterClass;
 
-	SorterType(TypeToken<? extends SorterConfig> typeToken) {
-		this.typeToken = typeToken;
+	SorterType(Class<? extends SorterConfig> sorterClass) {
+		this.sorterClass = sorterClass;
 	}
 
-	public TypeToken<? extends SorterConfig> typeToken() {
-		return typeToken;
+	public static SorterType fromInstance(SorterConfig config) {
+		for (SorterType type : values()) {
+			if (type.sorterClass.isInstance(config)) {
+				return type;
+			}
+		}
+		throw new IllegalStateException("unknown sorter class: " + config.getClass()
+				+ ", super=" + config.getClass().getSuperclass()
+				+ ", interfaces=" + Arrays.toString(config.getClass().getInterfaces())
+				+ ", loader=" + config.getClass().getClassLoader());
+	}
+
+	public Class<? extends SorterConfig> sorterClass() {
+		return this.sorterClass;
 	}
 }

@@ -2,7 +2,7 @@ package fi.fabianadrian.playerlist.config;
 
 import fi.fabianadrian.playerlist.PlayerList;
 import fi.fabianadrian.playerlist.config.liaison.PatternLiaison;
-import fi.fabianadrian.playerlist.config.liaison.SorterConfigLiaison;
+import fi.fabianadrian.playerlist.config.liaison.PolymorphicSorterConfigLiaison;
 import org.slf4j.Logger;
 import space.arim.dazzleconf.Configuration;
 import space.arim.dazzleconf.LoadResult;
@@ -26,7 +26,7 @@ public final class ConfigManager {
 	public ConfigManager(PlayerList plugin) {
 		this.logger = plugin.getSLF4JLogger();
 		this.dataPath = plugin.getDataPath();
-		this.configuration = Configuration.defaultBuilder(Config.class).addTypeLiaisons(new PatternLiaison(), new SorterConfigLiaison()).build();
+		this.configuration = Configuration.defaultBuilder(Config.class).addTypeLiaisons(new PatternLiaison(), new PolymorphicSorterConfigLiaison()).build();
 		this.backend = new TomlBackend(new PathRoot(this.dataPath.resolve("config.toml")));
 		this.errorPrint = new StandardErrorPrint(printable -> plugin.getSLF4JLogger().error(printable.printString()));
 	}
